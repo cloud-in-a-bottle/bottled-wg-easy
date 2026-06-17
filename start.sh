@@ -49,9 +49,24 @@ ADMIN_USERNAME="admin"
 
 if [[ ! -f "$CRED_FILE" ]]; then
     # 32 alnum chars ≈ 190 bits of entropy.  wg-easy doesn't enforce
-    # complexity at init time, so anything is fine; we use a long
-    # random string.
-    PASS="$(head -c 64 /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 32)"
+    # complexity at init time, but its /api/session login DOES require
+    # a password of at least 12 characters (v15.3.0+), so the generated
+    # password must reliably clear that bar.
+    #
+    # Only ~24% of random bytes (62 of 256 values) are alphanumeric, so
+    # reading a small fixed amount like `head -c 64` and filtering yields
+    # only ~15 usable chars on average — and frequently far fewer (we have
+    # observed 9-char results), which wg-easy then rejects at login,
+    # locking the owner out.  Draw plenty of bytes, filter, then slice the
+    # first 32 so a short result is statistically impossible.  Capturing
+    # the full filtered stream before slicing (rather than piping into a
+    # second `head -c`) avoids a SIGPIPE that would trip `set -o pipefail`.
+    PASS_POOL="$(head -c 4096 /dev/urandom | LC_ALL=C tr -dc 'a-zA-Z0-9')"
+    PASS="${PASS_POOL:0:32}"
+    if (( ${#PASS} < 12 )); then
+        echo "[start.sh] FATAL: generated admin password too short (${#PASS} chars)" >&2
+        exit 1
+    fi
     umask 077
     cat > "$CRED_FILE" <<EOF
 # Generated on first container start.  Used by auth_proxy.py to
