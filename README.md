@@ -1,7 +1,7 @@
-# openhost-wg-easy
+# bottled-wg-easy
 
 [wg-easy](https://github.com/wg-easy/wg-easy) — WireGuard VPN server
-with a web UI — packaged as an OpenHost app.
+with a web UI — packaged as a Cloud in a Bottle app.
 
 ## What this gives you
 
@@ -10,7 +10,7 @@ internet at `<zone>.selfhost.imbue.com:51823/udp`.  Use it to:
 
 - Connect your laptop/phone back to your home network when on the
   road.
-- Tunnel all internet traffic through your OpenHost zone (full-VPN
+- Tunnel all internet traffic through your Cloud in a Bottle zone (full-VPN
   mode — default).
 - Wire several of your devices into the same encrypted overlay
   network (10.42.42.0/24 inside the tunnel).
@@ -87,7 +87,7 @@ Either:
 
 ```bash
 # From the OpenHost host (ssh into the zone):
-podman exec -it openhost-wg-easy cli db:admin:reset --password "<new>"
+podman exec -it bottled-wg-easy cli db:admin:reset --password "<new>"
 
 # Then update the credentials file so the auth-proxy can still
 # auto-login:
@@ -155,11 +155,11 @@ README.md               this file
 
 ## Authoring notes
 
-- Built per the OpenHost `openhost-app` skill (Pattern B1, single-
+- Built per the Cloud in a Bottle `openhost-app` skill (Pattern B1, single-
   password persisted in `app_data`).
-- Modeled on `openhost-joplin/auth_proxy.py` for the login-replay
+- Modeled on `bottled-joplin/auth_proxy.py` for the login-replay
   pattern.
-- Uses OpenHost's `[[ports]]` mechanism to publish UDP/51820
+- Uses Cloud in a Bottle's `[[ports]]` mechanism to publish UDP/51820
   directly on the host (TCP+UDP both bound, only UDP meaningful
   here).
 - Capabilities limited to `NET_ADMIN` + `NET_RAW`; device
