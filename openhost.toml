@@ -1,7 +1,7 @@
 [app]
 name = "wg-easy"
 version = "0.1.0"
-description = "wg-easy — WireGuard VPN server with a web UI, packaged for OpenHost. UDP 51820 is published directly on the host so any WireGuard client (Linux, macOS, iOS, Android, Windows) can connect to the zone over the public internet. The web UI is gated by zone_auth via the OpenHost router and auto-logged-in to the wg-easy admin account via an SSO sidecar."
+description = "wg-easy — WireGuard VPN server with a web UI, packaged for Cloud in a Bottle. UDP 51820 is published directly on the host so any WireGuard client (Linux, macOS, iOS, Android, Windows) can connect to the zone over the public internet. The web UI is gated by zone_auth via the Cloud in a Bottle router and auto-logged-in to the wg-easy admin account via an SSO sidecar."
 authors = ["Andrew Laack <andrew@laack.co>"]
 
 [runtime.container]
