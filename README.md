@@ -35,7 +35,7 @@ brew install wireguard-tools  # or use the WireGuard.app from the App Store
 
 None.  wg-easy doesn't phone home; neither does wireguard-go or
 wireguard-tools.  The only network connections this container
-makes are inbound WireGuard handshakes on UDP/51820 and outbound
+makes are inbound WireGuard handshakes on UDP/51823 and outbound
 to whatever your peers route through the tunnel.
 
 ## Topology
@@ -106,7 +106,7 @@ sed -i "s/^export WGEASY_ADMIN_PASSWORD=.*/export WGEASY_ADMIN_PASSWORD='<new>'/
      `sudo systemctl enable --now wg-quick@wg0`.
    - Or scan the QR code from the WireGuard mobile app.
 
-That's it.  The client will connect to UDP 51820 on your zone and
+That's it.  The client will connect to UDP 51823 on your zone and
 get an IP in 10.42.42.0/24.
 
 ## Configuration knobs
@@ -146,7 +146,7 @@ container's data dir and re-deploy.
 ## Files
 
 ```
-openhost.toml           manifest (port 8080 routed; UDP 51820 published)
+openhost.toml           manifest (port 8080 routed; UDP 51823 published)
 Dockerfile              wg-easy:15 + python3 + curl + bash + scripts
 start.sh                bootstrap (creds, INIT_*, supervisor)
 auth_proxy.py           Pattern B1 SSO sidecar
@@ -159,7 +159,7 @@ README.md               this file
   password persisted in `app_data`).
 - Modeled on `bottled-joplin/auth_proxy.py` for the login-replay
   pattern.
-- Uses Cloud in a Bottle's `[[ports]]` mechanism to publish UDP/51820
+- Uses Cloud in a Bottle's `[[ports]]` mechanism to publish UDP/51823
   directly on the host (TCP+UDP both bound, only UDP meaningful
   here).
 - Capabilities limited to `NET_ADMIN` + `NET_RAW`; device
